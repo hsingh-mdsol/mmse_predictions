@@ -33,10 +33,14 @@ class Modeling(object):
         # fit model train/test
         x_train['preds_train'] = model.predict(x_train)
         x_test['preds_test'] = model.predict(x_test)
+        # coefficients
+        coefs = pd.DataFrame({'features': ['Intercept'] + model.feature_names_in_.tolist(),
+                             'coefficients': [model.intercept_] + model.coef_.tolist()})
         # performance
         perf = {'train': self.performance(x_train['preds_train'], y_train),
                 'test': self.performance(x_test['preds_test'], y_test)}
-        return {'df_preds_train': x_train, 'df_preds_test': x_test, 'performance': perf, 'model': model}
+        return {'df_preds_train': x_train, 'df_preds_test': x_test, 'performance': perf,
+                'model': model, 'coefficients': coefs, 'alpha': model.alpha_}
 
     def _importance(self, model) -> pd.DataFrame:
         """
