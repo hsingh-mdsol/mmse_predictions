@@ -27,7 +27,8 @@ class Modeling(object):
         """
         df = df_inp.copy()
         # train/test split
-        x_train, x_test, y_train, y_test = train_test_split(df[x_col], df[y_col], test_size=0.2, random_state=42)
+        x_train, x_test, y_train, y_test = train_test_split(df[x_col], df[y_col], test_size=0.2,
+                                                            random_state=42)
         # train model using cross validation to compute optimal alpha
         model = LassoCV(cv=5, random_state=0).fit(x_train, y_train)
         # fit model train/test
@@ -48,7 +49,8 @@ class Modeling(object):
         """
         importances = model.feature_importances_
         std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
-        imp_df = pd.DataFrame({'feature': model.feature_names_in_, 'importance': importances, 'std': std})
+        imp_df = pd.DataFrame({'feature': model.feature_names_in_, 'importance': importances,
+                               'std': std})
         imp_df.sort_values(['importance'], ascending=False, inplace=True)
         return imp_df
 
